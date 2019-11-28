@@ -1,0 +1,19 @@
+#RewriteEngine On
+#
+#RewriteCond  %{REQUEST_FILENAME} !-d
+#RewriteCond  %{REQUEST_FILENAME} !-t
+#RewriteCond  %{REQUEST_FILENAME} !-l
+#
+#RewriteRule ^(.+)$ IndexController.php?url=$1 [QSA,L]
+#
+Options -MultiViews
+RewriteEngine On
+
+RewriteBase /
+
+# Handle Front Controller...
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+
+# Redirect Trailing Slashes...
+RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
