@@ -9,4 +9,4 @@ Installation
 -----
 Create database and import .sql from datebaseFile,  DB config located on config/datebase.php file.
 
-Need to create virutal host and set up it on config/paths.php file.
+Need to create virtual host and set up it on config/paths.php file.
