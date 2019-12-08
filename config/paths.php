@@ -1,6 +1,8 @@
 <?php
+/*
+ * SITE URL, it should be edited on project installing time
+ */
 
 define("URL", "http://mintos.local/");
-define("RSS_PATH", "https://www.theregister.co.uk/software/headlines.atom");
 
 ?>

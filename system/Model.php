@@ -10,9 +10,13 @@ class Model {
     public function loadData($data, $validate = true) {
 	  if($validate) {
 		foreach ($data as $key => $value) {
-		    if (!property_exists($this, $key) || !$this->isValid($key, $value)) {
+		    if (!property_exists($this, $key)) {
 			  return false;
 		    }
+		    $this->isValid($key, $value);
+		}
+		if(!empty($this->errors)) {
+		    return false;
 		}
 	  } else {
 		foreach ($data as $key => $value) {
@@ -20,8 +24,8 @@ class Model {
 			  $this->$key = $this->validInput($value);
 		    }
 		}
+		return true;
 	  }
-	  return true;
     }
     
     public function save($lastInsertId = false) {
@@ -45,7 +49,6 @@ class Model {
 		}
 	  }
 	  $query = $this->db->prepare("INSERT INTO `{$this->table}`({$fields}) VALUES ({$values})");
-	  echo "INSERT INTO `{$this->table}`({$fields}) VALUES ({$values})";
 	  if ($query->execute($executionArray)) {
 		return $lastInsertId ? $this->db->lastInsertId() : true;
 	  } else {
@@ -58,9 +61,8 @@ class Model {
 	  if (method_exists($this, $methodName)) {
 		$methodName = 'validate' . ucfirst($key);
 		$this->$key = $this->validInput($value);
-		return $this->$methodName();
+		$this->$methodName();
 	  }
-	  return false;
     }
     
     protected function validInput($value) {

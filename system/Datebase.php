@@ -1,4 +1,9 @@
 <?php
+/**
+* Class Datebase
+* Connecting to DB
+*  
+*/
 namespace system;
 use PDO;
 

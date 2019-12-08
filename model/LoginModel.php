@@ -11,12 +11,16 @@ class LoginModel extends Model {
     public $email;
     public $password;
     public $confirmPassword;
-    private $errors = [];
+    public $errors = [];
     
     function __construct() {
 	  parent::__construct();
     }
     
+     /**
+    * Checking is user exist or no with entered email and password 
+    * @return mixed (bool , array) 
+    */
     public function login() {
 	  $query = $this->db->prepare("SELECT * FROM users WHERE email= :email AND password= :password");
 	  $query->execute(array(
@@ -29,6 +33,10 @@ class LoginModel extends Model {
 	  return false;
     }
     
+     /**
+    * Adding user into DB
+    * @return boolean 
+    */
     public function register() {
 	  $user = $this->db->prepare("INSERT INTO `users`(`fname`, `lname`, `email`, `password`) VALUES (:fname, :lname, :email, :password)");
 	  if ($user->execute(array(
@@ -43,42 +51,63 @@ class LoginModel extends Model {
 	  }
     }
     
+      /**
+    * Checking is Fname valid
+    * @return void 
+    */
     public function validateFname() {
-	  if (strlen($this->fname) > 100) {
-		$this->errors['fname'] = 'Too long First Name';
-		return false;
+	  if($this->fname != '') {
+		if (strlen($this->fname) > 50) {
+		    $this->errors['fname'] = 'Too long First Name';
+		}
+
+		if (!preg_match("/^[a-zA-Z ]*$/", $this->fname)) {
+		    $this->errors['fname'] = "Only letters and white space allowed";
+		}
+	  } else {
+		$this->errors['fname'] = 'First Name can\'t be blank' ;
 	  }
-	  if (!preg_match("/^[a-zA-Z ]*$/", $this->fname)) {
-		$this->errors['fname'] = "Only letters and white space allowed";
-		return false;
-	  }
-	  return true;
     }
     
+     /**
+    * Checking is Lname valid
+    * @return void 
+    */
     public function validateLname() {
-	  if (strlen($this->lname) > 100) {
-		$this->errors['fname'] = 'Too long Last Name';
-		return false;
+	  if($this->lname != '') {
+		if (strlen($this->lname) > 50) {
+		    $this->errors['lname'] = 'Too long Last Name';
+		}
+		if (!preg_match("/^[a-zA-Z ]*$/", $this->fname)) {
+		    $this->errors['lname'] = "Only letters and white space allowed";
+		}
+	  } else {
+		$this->errors['lname'] = 'Last Name can\'t be blank' ;
 	  }
-	  if (!preg_match("/^[a-zA-Z ]*$/", $this->fname)) {
-		$this->errors['fname'] = "Only letters and white space allowed";
-		return false;
-	  }
-	  return true;
+	  
     }
     
+     /**
+    *  Is entered email valid or no
+    * @return void 
+    */
     public function validateEmail() {
-	  if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
-		$this->errors['email'] = "Invalid email format";
-		return false;
+	  if($this->fname != '') {
+		if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
+		    $this->errors['email'] = "Invalid email format";
+		}
+		if ($this->isEmailExist()) {
+		    $this->errors['email'] = 'This email already exist';
+		}
+	  } else {
+		$this->errors['email'] = 'Email can\'t be blank' ;
 	  }
-	  if ($this->isEmailExist()) {
-		$this->errors['email'] = 'This email already exist';
-		return false;
-	  }
-	  return true;
     }
     
+     /**
+    * Checking is password satisfies requirements
+    * @return void 
+    */
     public function validatePassword() {
 	  $password = $this->password;
 	  $uppercase = preg_match('@[A-Z]@', $password);
@@ -87,19 +116,23 @@ class LoginModel extends Model {
 	  $specialChars = preg_match('@[^\w]@', $password);
 	  if (!$uppercase || !$lowercase || !$number || !$specialChars || strlen($password) < 8) {
 		$this->errors['password'] = 'Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.';
-		return false;
 	  }
-	  return true;
     }
     
+     /**
+    * Checking is confirm password input data same as password
+    * @return void 
+    */
     public function validateConfirmPassword() {
 	  if ($this->password != $this->confirmPassword) {
 		$this->errors['confirmPassword'] = "Confirm password and password doesn't match.";
-		return false;
 	  }
-	  return true;
     }
     
+    /**
+    * Checking is entered email already exist in DB or no
+    * @return int 
+    */
     public function isEmailExist() {
 	  $userPrepare = $this->db->prepare("SELECT * FROM `users` WHERE email = :email");
 	  $userPrepare->execute([':email' => $this->email]);
@@ -107,10 +140,18 @@ class LoginModel extends Model {
 	  return $count;
     }
     
+    /*
+    * Getting errors
+    * @return array 
+    */
     public function getErrors() {
 	  return $this->errors;
     }
     
+    /*
+    * generating password
+    * @return string 
+    */
     private function generatePassword($password) {
 	  $saltLength = 20;
 	  $hashFormat = "2y$10$"; 
@@ -120,6 +161,10 @@ class LoginModel extends Model {
 	  return $hash;
     }
     
+     /*
+    * Generating salt
+    * @return string 
+    */
     private function generateSalt($length) {
 	  $unique_random_string = md5(uniqid(mt_rand(), true));
 	  $base64_string = base64_encode($unique_random_string);

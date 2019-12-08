@@ -1,4 +1,9 @@
 <?php
+/**
+* Class Bootstrap
+* This class responsible for URL
+*  
+*/
 namespace system;
 
 class Bootstrap {

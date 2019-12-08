@@ -11,6 +11,11 @@ $secondSeg = Redirect::getUrlSegment(2);
   <meta charset="utf-8">
   <title><?=$this->title?></title>
   <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700'>
+    <?php if(!empty($this->css)):?>
+	  <?php foreach($this->css as $css):?>
+		<link rel="stylesheet" type="text/css" href="<?=$css?>">
+	  <?php endforeach;?>
+    <?php endif;?>
   <link rel="stylesheet" type="text/css" href="<?php echo URL; ?>public/css/theme.css">
   <link rel="stylesheet" type="text/css" href="<?php echo URL; ?>public/css/admin-forms.css">
   <link rel="shortcut icon" href="<?php echo URL; ?>public/img/favicon.ico">
@@ -64,4 +69,4 @@ $secondSeg = Redirect::getUrlSegment(2);
       </div>
     </aside>
     <section id="content_wrapper">
-      <section id="content" class="table-layout animated fadeIn">
+      

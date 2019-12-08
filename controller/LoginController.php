@@ -33,7 +33,7 @@ class LoginController extends Controller{
     public function validate() {
 	  //Test!2010
 	  $request = new Request();
-	  $loginModel = new LoginModel();	  
+	  $loginModel = new LoginModel();	 
 	  if($request->isPost() && $loginModel->loadData($request->getPost(), false)) {
 		if($user = $loginModel->login()){
 		    Session::set('isLogedin', true);
@@ -41,7 +41,11 @@ class LoginController extends Controller{
 		    Redirect::redirectTo(URL.'home'); 
 		} else {
 		    Session::set('errorMessage', "Something went wrong");
+		    Redirect::redirectTo(URL.'login'); 
 		}
+	  } else {
+		Session::set('errorMessage', "Something went wrong");
+		Redirect::redirectTo(URL.'login'); 
 	  }
     }
     

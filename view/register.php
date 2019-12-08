@@ -1,5 +1,7 @@
 <?php
+
 use libraries\Form;
+use system\Session;
 
 $form = new Form();
 ?>
@@ -11,6 +13,7 @@ $form = new Form();
 	  <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700'>
 	  <link rel="stylesheet" type="text/css" href="<?php echo URL; ?>public/css/theme.css">
 	  <link rel="stylesheet" type="text/css" href="<?php echo URL; ?>public/css/admin-forms.css">
+	  <link rel="stylesheet" type="text/css" href="<?php echo URL; ?>public/css/styles.css">
 	  <link rel="shortcut icon" href="<?php echo URL; ?>public/img/favicon.ico">
 	  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	  <!--[if lt IE 9]>
@@ -34,16 +37,16 @@ $form = new Form();
 				<div class="row mb15 table-layout">
 				    <div class="col-xs-12 text-right va-b pr5">
 					  <div class="login-links">
-						<a href="<?php echo URL; ?>/login" title="Sign In">Sign In</a>
+						<a href="<?php echo URL; ?>login" title="Sign In">Sign In</a>
 						<span class="text-white"> | </span>
-						<a href="<?php echo URL; ?>/login/register" class="active" title="Register">Register</a>
+						<a href="<?php echo URL; ?>login/register" class="active" title="Register">Register</a>
 					  </div>
 				    </div>
 				</div>
 				<div class="panel panel-info mt10 br-n">
 				    <!-- end .form-header section -->
 				    <?= $form->open(['method' => 'post', 'action' => URL . 'login/register', 'id' => 'register']) ?>
-				    <input type="hidden" value="<?=URL?>" id="urlInfo">
+				    <input type="hidden" value="<?= URL ?>" id="urlInfo">
 				    <div class="panel-body p25 bg-light">
 					  <div class="section-divider mt10 mb40">
 						<span>Set up your account</span>
@@ -57,7 +60,11 @@ $form = new Form();
 							  <label for="firstname" class="field-icon">
 								<i class="fa fa-user"></i>
 							  </label>
-							  <div id="fnameError" class="error hidden"></div>
+							  <div id="fnameError" class="error <?php if (!Session::get('fname')): ?>hidden<?php endif; ?>">
+								<?php if (Session::get('fname')): ?>
+								    <?= Session::get('fname') ?>
+								<?php Session::remove('fname'); endif; ?>
+							  </div>
 						    </label>
 						</div>
 						<!-- end section -->
@@ -68,7 +75,11 @@ $form = new Form();
 							  <label for="lastname" class="field-icon">
 								<i class="fa fa-user"></i>
 							  </label>
-							  <div id="lnameError" class="error hidden"></div>
+							  <div id="lnameError" class="error <?php if (!Session::get('lname')): ?>hidden<?php endif; ?>">
+								<?php if (Session::get('lname')): ?>
+								    <?= Session::get('lname') ?>
+								<?php Session::remove('lname'); endif; ?>
+							  </div>
 						    </label>
 						</div>
 						<!-- end section -->
@@ -81,7 +92,11 @@ $form = new Form();
 						    <label for="email" class="field-icon">
 							  <i class="fa fa-envelope"></i>
 						    </label>
-						    <div id="emailError" class="error hidden"></div>
+						    <div id="emailError" class="error <?php if (!Session::get('email')): ?>hidden<?php endif; ?>">
+							  <?php if (Session::get('email')): ?>
+								<?= Session::get('email') ?>
+							  <?php Session::remove('email'); endif; ?>
+						    </div>
 						</label>
 					  </div>
 					  <!-- end section -->
@@ -92,7 +107,11 @@ $form = new Form();
 						    <label for="password" class="field-icon">
 							  <i class="fa fa-unlock-alt"></i>
 						    </label>
-						    <div id="passwordError" class="error hidden"></div>
+						    <div id="passwordError" class="error <?php if (!Session::get('password')): ?>hidden<?php endif; ?>">
+							  <?php if (Session::get('password')): ?>
+								<?= Session::get('password') ?>
+							  <?php Session::remove('password'); endif; ?>
+						    </div>
 						</label>
 					  </div>
 					  <!-- end section -->
@@ -103,7 +122,11 @@ $form = new Form();
 						    <label for="confirmPassword" class="field-icon">
 							  <i class="fa fa-lock"></i>
 						    </label>
-						    <div id="confirmPasswordError" class="error hidden"></div>
+						    <div id="confirmPasswordError" class="error <?php if (!Session::get('confirmPassword')): ?>hidden<?php endif; ?>">
+							  <?php if (Session::get('confirmPassword')): ?>
+								<?= Session::get('confirmPassword') ?>
+							  <?php Session::remove('confirmPassword'); endif; ?>
+						    </div>
 						</label>
 					  </div>
 					  <!-- end section -->

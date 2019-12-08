@@ -1,4 +1,9 @@
 <?php
+/**
+* Class Controller
+* Root class controller 
+*  
+*/
 namespace system;
 
 use system\Session;

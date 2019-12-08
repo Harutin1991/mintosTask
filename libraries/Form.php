@@ -1,4 +1,9 @@
 <?php
+/**
+* Class Form
+* Allowed to create some html tags 
+*  
+*/
 namespace libraries;
 
 class Form{

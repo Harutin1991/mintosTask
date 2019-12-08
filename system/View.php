@@ -20,4 +20,28 @@ class View {
 	  }
 	  $error = new ErrorHandler();
     }
+    
+    public function pushCSS($param) {
+	  if(is_array($param)) {
+		foreach($param as $src) {
+		    $this->css[] = $src;
+		}
+	  } else {
+		$this->css[] = $param;
+	  }
+    }
+    
+    public function pushJS($param) {
+	  if(is_array($param)) {
+		foreach($param as $src) {
+		    $this->js[] = $src;
+		}
+	  } else {
+		$this->js[] = $param;
+	  }
+    }
+    
+    public function addScript($script) {
+	  $this->script[] = $script;
+    }
 }

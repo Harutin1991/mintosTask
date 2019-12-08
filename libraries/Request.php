@@ -16,5 +16,9 @@ Class Request{
 	  }
        return $_POST;
     }
+    
+    public function isValidRssUrl($url) {
+	  
+    }
 }
 
